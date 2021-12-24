@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>TP copieur & tableau calcul</title>
+        <style>
+            * { box-sizing: border-box; }
+            .conteneur { width: 1000px; margin: 0 auto; border: 1px solid; padding: 20px; margin-top: 100px; }
+            .copieur { width: 500px; display: flex; flex-wrap: wrap; border: 1px solid #dedede; padding: 20px;}
+            .copieur label { width: 35%; }
+            .copieur input { width: 60%; border: 1px solid #dedede; height: 30px; }
+            table { width: 500px; border-collapse: collapse; }
+            table td { padding: 10px; }
+            table th { padding: 10px; background-color: #333333; color: white; }
+        </style>
+    </head>
+    <body>
+        <div class="conteneur">
+            <form>
+                <div class="copieur">
+                    <label>Votre texte ici</label>
+                    <!-- <input type="text" id="saisie" value="" onkeyup="copieur()" ><br><br> -->
+                    <input type="text" id="saisie" value="" /><br /><br />
+                    <label>La copie ici</label>
+                    <input type="text" id="copie" value="" />
+                </div>
+            </form>
+
+            <hr />
+
+            <div class="copieur">
+                <label>Saississez un nombre</label>
+                <input type="text" id="nombre" value="" />
+            </div>
+            <hr />
+            <table border="1">
+                <tr>
+                    <th>nombre</th>
+                    <th>carré</th>
+                    <th>cube</th>
+                </tr>
+                <tr>
+                    <td class="mesTds"></td>
+                    <td class="mesTds"></td>
+                    <td class="mesTds"></td>
+                </tr>
+            </table>
+
+
+
+        </div>
+
+
+        <script>
+
+            //---------------------------------------------------------
+            // - COPIEUR
+            //---------------------------------------------------------
+
+            var monChampSaisie = document.getElementById('saisie');
+            // var monChampCopie = document.getElementById('copie');
+            var monChampCopie = document.getElementsByTagName('input');
+            console.log(monChampSaisie);
+            console.log(monChampCopie);
+            
+            // avec addEventListener
+            monChampSaisie.addEventListener("keyup", function () {
+                // console.log('keyup');
+                var saisieValue = monChampSaisie.value;
+                console.log(saisieValue);
+                // avec getElementById
+                // monChampCopie.value = saisieValue;
+
+                // avec getElementsByTagName
+                monChampCopie[1].value = saisieValue;
+            });
+            
+
+           
+            /*
+            // avec onkeyup
+            monChampSaisie.onkeyup = function () {
+                // console.log('keyup');
+                var saisieValue = monChampSaisie.value;
+                console.log(saisieValue);
+                // avec getElementById
+                // monChampCopie.value = saisieValue;
+
+                // avec getElementsByTagName
+                monChampCopie[1].value = saisieValue;
+            }
+            */
+
+            /*
+            // avec l'attribut onkeyup=""
+            function copieur () {
+                var monChampSaisie = document.getElementById('saisie');
+                // var monChampCopie = document.getElementById('copie');
+                var monChampCopie = document.getElementsByTagName('input');
+
+                // console.log('keyup');
+                var saisieValue = monChampSaisie.value;
+                console.log(saisieValue);
+                // avec getElementById
+                // monChampCopie.value = saisieValue;
+
+                // avec getElementsByTagName
+                monChampCopie[1].value = saisieValue;
+            }
+            */
+
+
+            //---------------------------------------------------------
+            // - TABLEAU DE CALCUL
+            //---------------------------------------------------------
+            var calculSaisie = document.getElementById('nombre'),
+                nombre = document.getElementsByClassName('mesTds')[0],
+                carre = document.getElementsByClassName('mesTds')[1],
+                cube = document.getElementsByClassName('mesTds')[2];
+            
+                calculSaisie.addEventListener("keyup", function () {
+                    var calculSaisieValue = calculSaisie.value;
+                    console.log(typeof(calculSaisieValue));
+                    if(!isNaN(calculSaisieValue)) {
+                        nombre.innerHTML = '<b style="color: red">' + calculSaisieValue + '</b>';
+                        carre.innerHTML = '<b style="color: green">' + (calculSaisieValue * calculSaisieValue) + '</b>';
+                        cube.innerHTML = '<b style="color: blue">' + (calculSaisieValue * calculSaisieValue * calculSaisieValue) + '</b>';
+                    } else {
+                        nombre.innerHTML = '<b style="color: red">' + calculSaisieValue + '</b>';
+                        carre.innerHTML = '<b style="color: green">erreur de saisie</b>';
+                        cube.innerHTML = '<b style="color: blue">erreur de saisie</b>';
+                    }
+
+                });
+
+
+        </script>
+    </body>
+</html>

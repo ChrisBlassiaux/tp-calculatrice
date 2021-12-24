@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+      p { background:yellow; margin: 5px}
+	  a {text-decoration: none; font-weight: bold; }
+	  * { margin: 0 auto; text-align: center; }
+      </style>
+</head>
+<body>
+<script language="JavaScript" type="text/javascript">
+
+function calcul()
+{
+  var saisie1 = parseInt(document.formulaire.saisie1.value);
+  var operateur = document.formulaire.operateur.value;
+  var saisie2 = parseInt(document.formulaire.saisie2.value);
+  if(operateur == "+") { resultat = (saisie1+saisie2);  }
+  if(operateur == "-") { resultat = (saisie1-saisie2);  }
+  if(operateur == "*") { resultat = (saisie1*saisie2);  }
+  if(operateur == "/") { resultat = (saisie1/saisie2);  }
+  alert(saisie1+operateur+saisie2+ " = "+resultat);
+}
+var msgsaisie = document.createTextNode("saisir un chiffre");
+function msgsaisieon(){ document.getElementsByTagName("p")[1].appendChild(msgsaisie);} 
+function msgsaisieoff(){document.getElementsByTagName("p")[1].removeChild(msgsaisie);}
+var msgoperateur = document.createTextNode("selectionner un operateur : + - * / %");
+function msgoperateuron(){ document.getElementsByTagName("p")[1].appendChild(msgoperateur);} 
+function msgoperateuroff(){document.getElementsByTagName("p")[1].removeChild(msgoperateur);}
+</script>
+</head>
+<body>
+
+		<div class="zone1" style="background: #336699; padding: 20px; height: 100px; width: 500px;">
+			<form name="formulaire">
+				<input type="text" name="saisie1" onMouseover="msgsaisieon()" onMouseout="msgsaisieoff()">
+				<select name="operateur" onMouseover="msgoperateuron()" onMouseout="msgoperateuroff()">
+					<option>+</option>
+					<option>-</option>
+					<option>*</option>
+					<option>/</option>
+				</select>
+				<input type="text" name="saisie2" onMouseover="msgsaisieon()" onMouseout="msgsaisieoff()">
+				<input type="button" value="OK" onClick="calcul()">
+				<p></p>
+				<p> </p>
+			</form>
+		</div>
+	  
+<script>
+    $(".montre").click(function () {
+  	  $(".zone1").show("slow"); // si je clic sur le lien "montre" la div class "zone1" apparait
+    });
+    $(".cache").click(function () {
+  	  $(".zone1").hide("slow"); // si je clic sur le lien "cache" la div class "zone1" se cache
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Calculatrice</title>
+        <style>
+            * { box-sizing: border-box; transition: all 1.5s; }
+            .conteneur { width: 1000px; margin: 0 auto; border: 1px solid; padding: 20px; margin-top: 100px; }
+            .calculatrice { width: 100%; display: flex; flex-wrap: wrap; border: 1px solid #dedede; padding: 20px; flex-direction:row; justify-content: space-between; margin-bottom: 10px; text-align: center; }
+            .calculatrice div { width: 100%; }
+            .calculatrice input, .calculatrice select { width: 200px; border: 1px solid #dedede; height: 30px; text-align: center; }
+            #valide { background-color: #333333; color: white; }
+            .calculatrice div a { padding: 10px 25px; background-color: steelblue; color: white; text-decoration: none; }
+            .messageErreurUtilisateur { background-color: red; color: white; padding: 20px; }
+            .messageSuccesUtilisateur { background-color: green; color: white; padding: 20px; }
+            form { background-color: steelblue; margin-bottom: 10px; }
+            .affichageSurvol { padding: 20px; text-align: center; color: white; background-color: MidnightBlue; margin: 10px 0; }
+        </style>
+    </head>
+    <body>
+        <div class="conteneur">
+            <div class="calculatrice">
+                <div><a href="" id="afficher">Afficher la calculatrice</a> | <a href="" id="cacher">Cacher la calculatrice</a></div> 
+            </div>
+            <form id="monForm" style="opacity: 1; width: 100%; height: 72px;">                
+                <div class="calculatrice">
+                    <input type="text" id="n1" value="" />
+
+                    <select id="operateur">
+                        <option>+</option>
+                        <option>-</option>
+                        <option>/</option>
+                        <option>*</option>
+                        <option>%</option>
+                    </select>
+
+                    <input type="text" id="n2" value="" />
+
+                    <input type="submit" id="valide" value="Ok" />
+                </div>                                
+            </form>
+            <div id="affichageSurvol">
+                <!-- <div class="affichageSurvol" style="height: 0px; padding: 0;">Choisissez un opérateur</div> -->
+            </div>
+
+            <div class="calculatrice">
+                <div id="message"></div> 
+            </div>
+            
+        </div>
+
+
+        <script>
+
+            var formCalculatrice = document.getElementById('monForm');
+            var n1 = document.getElementById('n1');
+            var n2 = document.getElementById('n2');
+            var operateur = document.getElementById('operateur');
+            var divMessage = document.getElementById('message');
+            var mesLiensA = document.getElementsByTagName('a');
+            var mesFormElems = document.querySelectorAll('form input, form select');
+            var divAffichageSurvol = document.getElementById('affichageSurvol');
+
+            formCalculatrice.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                divMessage.innerHTML = "";
+
+                var n1Value = n1.value.trim();
+                var n2Value = n2.value.trim();
+                var operateurValue = operateur.value;
+
+                console.log(n1Value);
+                console.log(n2Value);
+                console.log(operateurValue);
+
+                if(n1Value == "" || n2Value == "") {
+                    // alert("Attention, les deux champs sont obligatoires pour pouvoir effectuer le calcul.");
+                    divMessage.innerHTML = '<div class="messageErreurUtilisateur">Attention,<br> les deux champs sont obligatoires pour pouvoir effectuer le calcul.</div>';
+                } else {
+                    if(isNaN(n1Value) || isNaN(n2Value)) {
+                        // alert("Attention, les saisies ne sont pas correctes, les valeurs doivent être de type numérique.");
+                        divMessage.innerHTML = '<div class="messageErreurUtilisateur">Attention,<br> les saisies ne sont pas correctes, les valeurs doivent être de type numérique.</div>';
+                    } else {
+
+                        // Calcul
+                        // on récupère des string, parseFloat() permet de transformer l'information en type number
+                        n1Value = parseFloat(n1Value);
+                        n2Value = parseFloat(n2Value);
+
+                        var resultat = '';
+                        switch(operateurValue) {
+                            case '+' : 
+                                resultat = n1Value + n2Value;
+                            break;
+                            case '-' : 
+                                resultat = n1Value - n2Value;
+                            break;
+                            case '*' : 
+                                resultat = n1Value * n2Value;
+                            break;
+                            case '/' : 
+                                resultat = n1Value / n2Value;
+                            break;
+                            case '%' : 
+                                resultat = n1Value % n2Value;
+                            break;
+                            default : 
+                                // alert('Erreur, veuillez vérifier l\'opérateur choisi');
+                                divMessage.innerHTML = '<div class="messageErreurUtilisateur">Erreur,<br> veuillez vérifier l\'opérateur choisi.</div>';
+                            break;
+                        }
+
+                        if(resultat !== '') {
+                            divMessage.innerHTML = '<div class="messageSuccesUtilisateur">' + n1Value + ' ' + operateurValue + ' ' + n2Value + ' = ' + resultat + '</div>';
+                        }
+
+                    }
+                }
+            }); // fin evenement submit
+
+
+            // Gestion evenement au click sur les liens a href
+            for(var i = 0; i < mesLiensA.length; i++) {
+                mesLiensA[i].addEventListener('click', function (e) {
+                    e.preventDefault();
+                    console.log(this.id);
+
+                    if(this.id == 'afficher') {
+                        // formCalculatrice.style.display = 'block';
+                        formCalculatrice.style.opacity = 1;
+                        //formCalculatrice.style.width = '100%';
+
+                        for(var y = 0; y < mesFormElems.length; y++) {
+                            mesFormElems[y].style.height = '30px';
+                        }
+
+                        formCalculatrice.style.height = '72px';
+                        divMessage.style.display = "block";
+                        
+                    } else {
+                        // formCalculatrice.style.display = 'none';
+                        formCalculatrice.style.opacity = 0;
+                        // formCalculatrice.style.width = '0';
+
+                        for(var y = 0; y < mesFormElems.length; y++) {
+                            mesFormElems[y].style.height = '0px';
+                        }
+
+                        formCalculatrice.style.height = '0';
+                        divMessage.style.display = "none";
+                    }
+                });
+            } // fin evenement click sur les liens
+
+
+            // Gestion des evenements survol des champs du formulaire
+            /*
+            n1.addEventListener('mouseover', function () {
+                divAffichageSurvol.innerHTML = '<div class="affichageSurvol">Saisir un chiffre</div>';
+            });
+            n1.addEventListener('mouseout', function () {
+                divAffichageSurvol.innerHTML = '';
+            });
+
+            n2.addEventListener('mouseover', function () {
+                divAffichageSurvol.innerHTML = '<div class="affichageSurvol">Saisir un chiffre</div>';
+            });
+            n2.addEventListener('mouseout', function () {
+                divAffichageSurvol.innerHTML = '';
+            });
+            */
+            var tabChampsSaisie = [n1, n2];
+            for(var i = 0; i < tabChampsSaisie.length; i++) {
+                tabChampsSaisie[i].addEventListener('mouseover', function () {
+                    divAffichageSurvol.innerHTML = '<div class="affichageSurvol">Saisir un chiffre</div>';
+                });
+                tabChampsSaisie[i].addEventListener('mouseout', function () {
+                    divAffichageSurvol.innerHTML = '';
+                });
+            }
+
+            operateur.addEventListener('mouseenter', function () {
+                divAffichageSurvol.innerHTML = '<div class="affichageSurvol">Choisissez un opérateur</div>';
+                // document.getElementsByClassName('affichageSurvol')[0].style.height = "90px";
+                // document.getElementsByClassName('affichageSurvol')[0].style.padding = "20px";
+            });
+            operateur.addEventListener('mouseleave', function () {
+                divAffichageSurvol.innerHTML = '';
+                // document.getElementsByClassName('affichageSurvol')[0].style.height = "0px";
+                // document.getElementsByClassName('affichageSurvol')[0].style.padding = "0px";
+            });
+
+
+
+        </script>
+    </body>
+</html>
